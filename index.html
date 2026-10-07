@@ -450,7 +450,9 @@ let _lastSec="";async function render(){if(V.p!=="sec"||_lastSec!==(V.s+"/"+V.k)
      i.onchange=()=>{const u=V.k==="wt"?" KGS":PAIR[V.k]?"cm":"";if(u&&/^\s*\d+(?:[.,]\d+)?\s*$/.test(i.value)){i.value=i.value.trim()+u;x.ph[i.dataset.i].cap=i.value;autoMeas(V.k,x);autoWt(V.k,x);save()}}});
     $("#cps").onclick=()=>copySec(k,V.k);
     $("#nt").oninput=e=>{x.note=e.target.value;if(x.note!==x.am)x.am=null;save()};
-    a.querySelectorAll("[data-t]").forEach(i=>i.oninput=()=>{(x.t||(x.t={}))[i.dataset.t]=i.value;save()});
+    a.querySelectorAll("[data-t]").forEach(i=>{i.oninput=()=>{(x.t||(x.t={}))[i.dataset.t]=i.value;save()};
+     /* gõ số xong tự thêm đơn vị: cân nặng → KGS, kích thước thùng → cm */
+     i.onchange=()=>{const v=i.value.trim(),u=V.k==="wt"?(/^\d+(?:[.,]\d+)?$/.test(v)?" KGS":""):V.k==="psz"?(/\d$/.test(v)?" cm":""):"";if(u){i.value=v+u;(x.t||(x.t={}))[i.dataset.t]=i.value;save()}}});
     a.querySelectorAll("[data-m]").forEach(e=>e.onclick=()=>{const[i,d]=e.dataset.m.split(":").map(Number),j=nbI(i,d);if(j<0)return;const A=x.ph[i],B=x.ph[j];[A.id,B.id]=[B.id,A.id];[A.sev,B.sev]=[B.sev,A.sev];save();render()});
     a.querySelectorAll("[data-rp]").forEach(f=>f.onchange=()=>{const file=f.files[0];f.value="";if(file)pdfToRef(x,file)});
     a.querySelectorAll("[data-rf]").forEach(f=>f.onchange=async()=>{const d=await comp(f.files[0]);if(!d)return;const id=uid();if(!(await idbPut("i",id,d)))return;memSet(id,d);await saveThumb(id);if(x.ph[0].id)await delImg(x.ph[0].id);x.ph[0].id=id;if(hiOn())await idbPut("i","h:"+id,f.files[0]);await save();render()});
@@ -704,7 +706,7 @@ function autoMeas(key,x){if(!PAIR[key])return;const vs=x.ph.filter(p=>p.id&&!p.u
 /* cân nặng: ảnh 1-2 = Weight Carton (GW), ảnh 3-4 = Weight Product (NW); số ở chú thích → dòng Thực tế */
 function autoWt(key,x){if(key!=="wt")return;const P=x.ph.filter(p=>p.id&&!p.up),t=x.t||(x.t={}),am=x.amw||(x.amw={});
  const num=a=>{for(const p of a){const m=String(p?.cap||"").match(KGR);if(m)return m[1].replace(",",".")}return""};
- for(const[f,v]of[["g1",num(P.slice(0,2))],["n1",num(P.slice(2,4))]]){if(!v)continue;if(!t[f]||t[f]===am[f]){t[f]=am[f]=v;const e=document.querySelector(`[data-t="${f}"]`);if(e)e.value=v}}}
+ for(let[f,v]of[["g1",num(P.slice(0,2))],["n1",num(P.slice(2,4))]]){if(!v)continue;if(!t[f]||t[f]===am[f]||t[f]===v){t[f]=am[f]=v+" KGS";v=t[f];const e=document.querySelector(`[data-t="${f}"]`);if(e)e.value=v}}}
 const bl=t=>{const l=String(t||"").split("\n").map(x=>x.replace(/^\s*[•\-*]\s*/,"").trim()).filter(Boolean);return l.length?`<ul class=bl>${l.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""};
 const dimU=v=>{v=String(v||"").trim();return v&&/\d$/.test(v)?v+" cm":v};
 function spec(k,x,first){const t=x.t||{},u=(v,s)=>v&&/^[\d.]+$/.test(v)?v+" "+s:v||"",nt=n=>first&&x.note?`<tr><td colspan=${n}>${bl(x.note)}</td></tr>`:"";
