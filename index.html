@@ -195,7 +195,7 @@ const SEC=[["box","Box Selection","Chọn thùng"],["pack","Packaging Check","Ki
 const DSEC=[["dpk","Packaging Before Test","Đóng gói trước khi test"],["dwt","Weight Photos","Cân nặng thùng & sản phẩm"],["ddim","Packaging Dim","Kích thước thùng"],["dinb","Inner Box Dim","Kích thước thùng trong (inner box)"],["dcor","Drop Test – Corner","Thả rơi – Góc"],["dfac","Drop Test – Face","Thả rơi – Mặt"],["dedg","Drop Test – Edges","Thả rơi – Cạnh"],["dopen","Open Box After Tested","Khui thùng sau khi test"],["dmat","Packing Materials","Vật tư đóng gói"],["dcmp","Loose Components","Chi tiết rời"],["dman","Manual (AI)","Hướng dẫn lắp ráp (HDLR)"],["dpph","Product After Unbox","Sản phẩm sau khi khui thùng"]];
 const PSEC=[["pcov","Cover Photo","Ảnh trang bìa"],["pms","Master Samples at Factory","Mẫu kí lưu tại nhà máy"],["ppro","Product Photos","Hình sản phẩm"],["pww","WW Product Photos","Hình sản phẩm chưa sơn"],["podim","Overall Dim","Kích thước tổng thể"],["pdim","Details Dim Measure","Đo kích thước chi tiết"],["pmat","Materials","Vật liệu"],["pkd","KD Component – HW","Chi tiết tháo rời & ngũ kim"],["pdraw","Product Drawing","Bản vẽ sản phẩm"],["pwatch","Production Watch Out","Lưu ý cho sản xuất"]];
 const ASEC=[...SEC,...DSEC,...PSEC],isDrop=r=>(r||S||{}).type==="drop",isPPS=r=>(r||S||{}).type==="pps",isOne=r=>isDrop(r)||isPPS(r),isDK=k=>DSEC.some(z=>z[0]===k)||PSEC.some(z=>z[0]===k),SECS=()=>isDrop()?DSEC:isPPS()?PSEC:SEC;
-const APPV="v55";const $=s=>document.querySelector(s);
+const APPV="v56";const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 let db,S,V={p:"list"},mem={};
@@ -319,7 +319,7 @@ async function camOpen(onShot,onDel){
    Promise.all(ps).then(r=>{if(r.includes("granted"))sensOn();else toast("⚠ iPhone chưa cho phép cảm biến xoay — ảnh sẽ theo nút ⟳ trên khung chụp. Vào Cài đặt iPhone → Safari → Nâng cao → Dữ liệu trang web để cấp lại quyền (KHÔNG xóa app khỏi màn hình chính — sẽ mất dữ liệu).")})}else sensOn()}catch(e){}
  setTimeout(()=>{if(!sens&&document.querySelector(".cam"))toast("⚠ Không đọc được cảm biến xoay — bấm nút ⟳ trên khung chụp để chọn NGANG / DỌC")},2500);
  const m=document.createElement("div");m.className="cam";
- m.innerHTML='<div class=cvw><video playsinline webkit-playsinline autoplay muted disablepictureinpicture disableremoteplayback x-webkit-airplay="deny"></video><div class=cfl></div><div class=cgr><i></i><i></i><i></i><i></i></div><div class=clv><i></i><b></b><i></i></div><div class=cfx><span class=cf0></span><span class=cf1></span></div><div class=cor>↻ Ảnh sẽ lưu theo chiều ngang</div><div class=ctp><span class=crs hidden></span><button class=omb>⟳ Tự động</button><button class=clb>━ Cân bằng</button><button class=cgb>▦ Lưới</button></div><div class=czm></div><div class=cst><p>Ảnh chụp tự lưu — chạm ảnh nhỏ để xem, xoay, xóa</p></div></div><div class=camb><label class=cnb>📱 Camera<br>iPhone<input type=file accept="image/*" capture=environment hidden></label><div class=csc><div class=cmd>ẢNH</div><button id=sh aria-label="Chụp"></button></div><button id=cx>Xong</button></div>';document.body.append(m);
+ m.innerHTML='<div class=cvw><video playsinline webkit-playsinline autoplay muted disablepictureinpicture disableremoteplayback x-webkit-airplay="deny"></video><div class=cfl></div><div class=cgr><i></i><i></i><i></i><i></i></div><div class=clv><i></i><b></b><i></i></div><div class=cfx><span class=cf0></span><span class=cf1></span></div><div class=cor>↻ Ảnh sẽ lưu theo chiều ngang</div><div class=ctp><span class=crs hidden></span><button class=omb>⟳ Tự động</button><button class=clb>━ Cân bằng</button><button class=cgb>▦ Lưới</button></div><div class=czm></div><div class=cst><p>Chạm nút là chụp ngay · thấy nháy là đã chụp xong · ảnh tự lưu — chạm ảnh nhỏ để xem, xoay, xóa</p></div></div><div class=camb><label class=cnb>📱 Camera<br>iPhone<input type=file accept="image/*" capture=environment hidden></label><div class=csc><div class=cmd>ẢNH</div><button id=sh aria-label="Chụp"></button></div><button id=cx>Xong</button></div>';document.body.append(m);
  const v=m.querySelector("video"),vw=m.querySelector(".cvw"),strip=m.querySelector(".cst"),fl=m.querySelector(".cfl"),cx=m.querySelector("#cx"),zb=m.querySelector(".czm"),ot=m.querySelector(".cor"),omb=m.querySelector(".omb"),gr=m.querySelector(".cgr"),gb=m.querySelector(".cgb"),rs=m.querySelector(".crs");
  let stm=null,ic=null,busy=0,n=0,away=0,hw=null,z=1;
  const noGest=e=>e.preventDefault();document.addEventListener("gesturestart",noGest);document.addEventListener("gesturechange",noGest);
@@ -339,7 +339,7 @@ async function camOpen(onShot,onDel){
  const start=async()=>{clearTimeout(CAMS.t);const live=CAMS.s&&CAMS.s.getVideoTracks().some(t=>t.readyState==="live"&&t.enabled&&!t.muted);if(CAMS.s&&!live){CAMS.s.getTracks().forEach(t=>t.stop());CAMS.s=null}
   if(live)stm=CAMS.s;else{stm=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:4032},height:{ideal:3024},aspectRatio:{ideal:4/3}},audio:false});CAMS.s=stm}
   v.muted=true;v.playsInline=true;v.setAttribute("playsinline","");v.setAttribute("webkit-playsinline","");v.controls=false;v.srcObject=stm;await Promise.race([v.play().catch(()=>{}),new Promise(r=>setTimeout(r,1500))]);ic=null;hw=null;
-  const tr=stm.getVideoTracks()[0];try{const cp=tr.getCapabilities&&tr.getCapabilities();if(cp&&cp.zoom&&cp.zoom.max>cp.zoom.min)hw={min:cp.zoom.min,max:cp.zoom.max}}catch(e){}
+  const tr=stm.getVideoTracks()[0];try{const cp=tr.getCapabilities&&tr.getCapabilities();if(cp&&cp.focusMode&&cp.focusMode.includes("continuous"))tr.applyConstraints({advanced:[{focusMode:"continuous"}]}).catch(()=>{});if(cp&&cp.zoom&&cp.zoom.max>cp.zoom.min)hw={min:cp.zoom.min,max:cp.zoom.max}}catch(e){}
   try{if(window.ImageCapture)ic=new ImageCapture(tr)}catch(e){}zUI();setTimeout(place,50)};
  /* đóng camera: giữ luồng 3 phút để lần mở sau không hỏi quyền lại */
  const stop=hard=>{if(stm){if(hard){stm.getTracks().forEach(t=>t.stop());CAMS.s=null}else{const q=stm;CAMS.t=setTimeout(()=>{q.getTracks().forEach(t=>t.stop());if(CAMS.s===q)CAMS.s=null},180000)}}stm=null};
@@ -371,17 +371,27 @@ async function camOpen(onShot,onDel){
   const rt=async dir=>{await rotImg(id,dir);r.querySelector(".ci img").src=mem[id];t.src=memT[id]||mem[id]};r.querySelector(".rl").onclick=()=>rt(-1);r.querySelector(".rr").onclick=()=>rt(1);
   r.querySelector(".rd").onclick=async()=>{await onDel(id);t.remove();n--;cnt();if(!n)strip.innerHTML='<p>Ảnh chụp tự lưu — chạm ảnh nhỏ để xem, xoay, xóa</p>';r.remove()};
   r.querySelector(".ru").onclick=()=>{t.classList.add("ok");r.remove()}};
- /* chụp: cắt theo zoom số + xoay theo cách cầm máy */
- const grab=async()=>{const rot=rotNeed(),dz=hw?1:z;
-  if(ic&&!rot&&dz<=1){try{const b=await ic.takePhoto();if(b&&b.size){let ok=false;try{const bm=await createImageBitmap(b);ok=(bm.width>bm.height)===(v.videoWidth>v.videoHeight);bm.close&&bm.close()}catch(e){}if(ok)return b}}catch(e){}}
-  const W=v.videoWidth,H=v.videoHeight,cw=W/dz,ch=H/dz,c=document.createElement("canvas"),sw=rot%180===90;c.width=Math.round(sw?ch:cw);c.height=Math.round(sw?cw:ch);
-  const g=c.getContext("2d");g.translate(c.width/2,c.height/2);g.rotate(rot*Math.PI/180);g.drawImage(v,(W-cw)/2,(H-ch)/2,cw,ch,-cw/2,-ch/2,cw,ch);
-  let b=await new Promise(r=>{try{c.toBlob(r,"image/jpeg",.92)}catch(e){r(null)}});
-  if(!b){try{const u=c.toDataURL("image/jpeg",.92);b=new Blob([b64(u)],{type:"image/jpeg"})}catch(e){}}
-  c.width=c.height=0;return b};
- const sb=m.querySelector("#sh");
- sb.onclick=async()=>{if(busy)return;if(!v.videoWidth){try{await v.play()}catch(e){}if(!v.videoWidth)return toast("Camera chưa sẵn sàng — thử lại sau 1 giây hoặc dùng nút 📱 Camera iPhone")}busy=1;shutterSnd();sb.style.opacity=.4;fl.style.transition="none";fl.style.opacity=.9;setTimeout(()=>{fl.style.transition="opacity .35s";fl.style.opacity=0},40);
-  try{const hb=await grab();const d=hb&&await comp(hb);if(d)await add(d,hb);else toast("Không chụp được — hãy dùng nút 📱 Camera iPhone")}catch(e){toast("Lỗi chụp: "+(e&&e.message||e))}finally{setTimeout(()=>{if(v.paused)v.play().catch(()=>{});busy=0;sb.style.opacity=1},250)}};
+ /* chụp NHANH & NÉT: lấy ngay khung hình lúc ngón tay chạm nút, xét thêm 2 khung kế tiếp (~70ms) và giữ khung NÉT NHẤT
+    (đo độ nét vùng giữa ảnh); tiếng chụp + nháy chỉ phát SAU khi đã bắt xong hình → thấy nháy là có thể di chuyển máy */
+ const shot=()=>new Promise(res=>{const W=v.videoWidth,H=v.videoHeight,dz=hw?1:z,cw=W/dz,ch=H/dz,sx=(W-cw)/2,sy=(H-ch)/2,SW=240,SH=Math.max(2,Math.round(SW*ch/cw));
+  const sm=document.createElement("canvas");sm.width=SW;sm.height=SH;const sg=sm.getContext("2d",{willReadFrequently:true});let best=null,bs=-1,k=0,done=0;
+  const score=()=>{sg.drawImage(v,sx+cw*.2,sy+ch*.2,cw*.6,ch*.6,0,0,SW,SH);const d=sg.getImageData(0,0,SW,SH).data,R=SW*4;let s=0;
+   for(let y=1;y<SH-1;y+=2)for(let x=1;x<SW-1;x+=2){const i=(y*SW+x)*4,gx=d[i+4]+d[i+5]+d[i+6]-d[i-4]-d[i-3]-d[i-2],gy=d[i+R]+d[i+R+1]+d[i+R+2]-d[i-R]-d[i-R+1]-d[i-R+2];s+=gx*gx+gy*gy}return s};
+  const fin=()=>{if(done)return;done=1;sm.width=sm.height=0;res(best)};
+  const take=()=>{if(done)return;try{const s=score();if(s>bs){bs=s;if(!best){best=document.createElement("canvas");best.width=Math.round(cw);best.height=Math.round(ch)}best.getContext("2d").drawImage(v,sx,sy,cw,ch,0,0,best.width,best.height)}}catch(e){}
+   if(++k>=3)return fin();if(v.requestVideoFrameCallback)v.requestVideoFrameCallback(take);else setTimeout(take,34)};
+  take();setTimeout(fin,250)});
+ const toJpg=async(c,rot)=>{let o=c;if(rot){o=document.createElement("canvas");const sw=rot%180===90;o.width=sw?c.height:c.width;o.height=sw?c.width:c.height;const g=o.getContext("2d");g.translate(o.width/2,o.height/2);g.rotate(rot*Math.PI/180);g.drawImage(c,-c.width/2,-c.height/2);c.width=c.height=0}
+  let b=await new Promise(r=>{try{o.toBlob(r,"image/jpeg",.92)}catch(e){r(null)}});if(!b){try{b=new Blob([b64(o.toDataURL("image/jpeg",.92))],{type:"image/jpeg"})}catch(e){}}o.width=o.height=0;return b};
+ const sb=m.querySelector("#sh");let pend=0,queue=Promise.resolve(),capt=0,again=0;
+ const fire=async()=>{if(capt){again=1;return}/* bấm lúc đang bắt hình → chụp tiếp ngay sau */if(busy){if(pend>=5)toast("Đang lưu ảnh… chờ chút rồi chụp tiếp");return}if(!v.videoWidth){try{await v.play()}catch(e){}if(!v.videoWidth)return toast("Camera chưa sẵn sàng — thử lại sau 1 giây hoặc dùng nút 📱 Camera iPhone")}
+  busy=1;capt=1;sb.style.opacity=.4;const rot=rotNeed();let c=null;try{c=await shot()}catch(e){}capt=0;
+  /* đã bắt xong hình → báo cho người chụp */
+  shutterSnd();fl.style.transition="none";fl.style.opacity=.9;setTimeout(()=>{fl.style.transition="opacity .35s";fl.style.opacity=0},40);if(v.paused)v.play().catch(()=>{});
+  if(!c){busy=0;sb.style.opacity=1;return toast("Không chụp được — hãy dùng nút 📱 Camera iPhone")}
+  const jp=toJpg(c,rot);/* nén ngay để giải phóng bộ nhớ khung hình */pend++;if(pend<5){busy=0;sb.style.opacity=1}/* chụp tiếp được ngay trong lúc ảnh trước đang lưu */if(again){again=0;setTimeout(fire,0)}
+  queue=queue.then(async()=>{try{const hb=await jp;const d=hb&&await comp(hb);if(d)await add(d,hb);else toast("Không lưu được ảnh — thử lại")}catch(e){toast("Lỗi chụp: "+(e&&e.message||e))}finally{pend--;if(pend<5&&!capt){busy=0;sb.style.opacity=1}}})};
+ sb.onpointerdown=e=>{e.preventDefault();fire()};sb.onclick=e=>{if(e.detail===0)fire()};
  /* iPhone đôi khi mở video ra trình phát toàn màn hình (chữ LIVE) che mất nút chụp: thoát ra ngay và chạy lại khung ngắm */
  let fsWarn=0;v.addEventListener("webkitbeginfullscreen",()=>{try{v.webkitExitFullscreen()}catch(e){}if(!fsWarn++)toast("Đã tắt chế độ phát toàn màn hình — bấm nút tròn để chụp")});
  v.addEventListener("webkitendfullscreen",()=>{setTimeout(()=>v.play().catch(()=>{}),100)});
