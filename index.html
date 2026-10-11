@@ -37,7 +37,10 @@ button.b.y{background:var(--acc);color:#222}button.b.g{background:var(--bg);colo
 #print{display:none}
 .ed{position:fixed;inset:0;background:#1c1c1e;z-index:110;display:flex;flex-direction:column;color:#fff;user-select:none;-webkit-user-select:none}
 .edt{display:flex;align-items:center;gap:8px;padding:calc(8px + env(safe-area-inset-top)) 10px 8px}.edt span{flex:1;text-align:center;font-weight:700}.edt button{border:0;border-radius:8px;padding:10px 14px;font-size:15px;font-weight:700;background:#3a3a3c;color:#fff}.edt .ok{background:#ffd60a;color:#000}
-.edw{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;padding:18px;touch-action:none}.edw canvas{max-width:100%;max-height:100%;display:block}
+.edw{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;padding:18px;touch-action:none}.edw canvas{max-width:100%;max-height:100%;display:block}.edw .eov{position:absolute;max-width:none;max-height:none;pointer-events:none;touch-action:none;z-index:2}
+.edm{display:flex;gap:6px;padding:6px 10px 0}.edm button{flex:1;border:0;border-radius:10px;padding:10px;background:#3a3a3c;color:#fff;font-size:14px;font-weight:700}.edm button.on{background:#ffd60a;color:#000}
+.edp{padding:6px 10px calc(10px + env(safe-area-inset-bottom))}.edr{display:flex;gap:6px;margin-bottom:6px;align-items:center}.edr button{flex:1;border:0;border-radius:10px;padding:10px 6px;background:#3a3a3c;color:#fff;font-size:15px;font-weight:700;white-space:nowrap;min-width:0}
+.edr button.on{outline:3px solid #ffd60a;outline-offset:-3px}.edr .sw{flex:.7;height:40px;border:2px solid #fff6}.edr .sw.on{outline:3px solid #fff;outline-offset:2px}.edr .sep{width:6px}
 .ecb{position:absolute;border:2px solid #fff;box-shadow:0 0 0 9999px #000a;touch-action:none;cursor:move}.ecb::before,.ecb::after{content:"";position:absolute;pointer-events:none;border:0 solid #fff6}.ecb::before{left:33.3%;right:33.3%;top:0;bottom:0;border-width:0 1px}.ecb::after{top:33.3%;bottom:33.3%;left:0;right:0;border-width:1px 0}
 .ecb i{position:absolute;width:26px;height:26px;border:0 solid #fff}.ecb i[data-h=nw]{left:-5px;top:-5px;border-width:5px 0 0 5px}.ecb i[data-h=ne]{right:-5px;top:-5px;border-width:5px 5px 0 0}.ecb i[data-h=sw]{left:-5px;bottom:-5px;border-width:0 0 5px 5px}.ecb i[data-h=se]{right:-5px;bottom:-5px;border-width:0 5px 5px 0}
 .ecb i[data-h=n],.ecb i[data-h=s]{left:50%;margin-left:-13px;height:6px}.ecb i[data-h=n]{top:-5px;border-top-width:5px}.ecb i[data-h=s]{bottom:-5px;border-bottom-width:5px}.ecb i[data-h=e],.ecb i[data-h=w]{top:50%;margin-top:-13px;width:6px}.ecb i[data-h=e]{right:-5px;border-right-width:5px}.ecb i[data-h=w]{left:-5px;border-left-width:5px}
@@ -192,7 +195,7 @@ const SEC=[["box","Box Selection","Chọn thùng"],["pack","Packaging Check","Ki
 const DSEC=[["dpk","Packaging Before Test","Đóng gói trước khi test"],["dwt","Weight Photos","Cân nặng thùng & sản phẩm"],["ddim","Packaging Dim","Kích thước thùng"],["dinb","Inner Box Dim","Kích thước thùng trong (inner box)"],["dcor","Drop Test – Corner","Thả rơi – Góc"],["dfac","Drop Test – Face","Thả rơi – Mặt"],["dedg","Drop Test – Edges","Thả rơi – Cạnh"],["dopen","Open Box After Tested","Khui thùng sau khi test"],["dmat","Packing Materials","Vật tư đóng gói"],["dcmp","Loose Components","Chi tiết rời"],["dman","Manual (AI)","Hướng dẫn lắp ráp (HDLR)"],["dpph","Product After Unbox","Sản phẩm sau khi khui thùng"]];
 const PSEC=[["pcov","Cover Photo","Ảnh trang bìa"],["pms","Master Samples at Factory","Mẫu kí lưu tại nhà máy"],["ppro","Product Photos","Hình sản phẩm"],["pww","WW Product Photos","Hình sản phẩm chưa sơn"],["podim","Overall Dim","Kích thước tổng thể"],["pdim","Details Dim Measure","Đo kích thước chi tiết"],["pmat","Materials","Vật liệu"],["pkd","KD Component – HW","Chi tiết tháo rời & ngũ kim"],["pdraw","Product Drawing","Bản vẽ sản phẩm"],["pwatch","Production Watch Out","Lưu ý cho sản xuất"]];
 const ASEC=[...SEC,...DSEC,...PSEC],isDrop=r=>(r||S||{}).type==="drop",isPPS=r=>(r||S||{}).type==="pps",isOne=r=>isDrop(r)||isPPS(r),isDK=k=>DSEC.some(z=>z[0]===k)||PSEC.some(z=>z[0]===k),SECS=()=>isDrop()?DSEC:isPPS()?PSEC:SEC;
-const APPV="v48";const $=s=>document.querySelector(s);
+const APPV="v50";const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 let db,S,V={p:"list"},mem={};
@@ -798,7 +801,7 @@ function dropHome(a){const c=S.cover;if(!S.skus.length){S.skus.push({id:uid(),co
  <div class=c><h2>Testing Protocol</h2><label>Nhóm cân nặng</label><select data-dc="wc"><option value="">Tự động theo GW${W.gw?" ("+W.gw+" kg → "+(+W.gw>=50?"&gt;":"&lt;")+"50Kg)":""}</option><option value="lt" ${c.wc==="lt"?"selected":""}>Weight &lt;50Kg</option><option value="gt" ${c.wc==="gt"?"selected":""}>Weight &gt;50Kg</option></select>${f("dh","Drop At Height","vd: 76 cm")}
   <p class=tip>X = đã test (ô xanh) · NA = không test. ${pr.man?"<b>Đang chỉnh tay.</b>":"Đang tự đếm theo số ảnh ở mục Thả rơi (mỗi cặp ảnh = 1 lần thả)."} Bấm vào ô để đánh dấu: X (đã test, ô xanh) ↔ NA (không test).</p>${grid("e","Edge")}${grid("f","Face")}${grid("c","Corner")}${pr.man?`<button class="b g" id=tpa style="width:100%;margin-top:8px">↺ Tự động theo ảnh</button>`:""}</div>
  <div class=c><h2>Hình chụp</h2><p class=tip>Inner Box Dim: mỗi thùng trong chụp 6 ảnh (toàn cảnh → số đo cho Dài, Rộng, Cao) — thùng 1 rồi thùng 2…, không có thì báo cáo ghi N/A. Góc / Mặt / Cạnh: chụp theo cặp — ảnh lúc thả rồi ảnh thùng rơi xuống sàn. Cân nặng: thùng → số cân thùng → sản phẩm → số cân SP. Kích thước: toàn cảnh → số đo (Dài, Rộng, Cao).</p>${DSEC.map(x=>{const n=cnt(k,x[0]);return`<div class=row data-k="${x[0]}"><div class=t>${x[1]}<small>${x[2]}</small></div><span class="n ${n?"on":""}">${n}</span></div>`}).join("")}
-  <label style="display:flex;gap:8px;align-items:center;font-weight:400;margin-top:10px"><input type=checkbox id=dref style="width:auto" ${c.ref!==0?"checked":""}> Thêm 2 trang hình tham khảo (dán tem Part#, Tracker label, Warranty card…)</label></div>
+  <label style="display:flex;gap:8px;align-items:center;font-weight:400;margin-top:10px"><input type=checkbox id=dref style="width:auto" ${c.refOn===1?"checked":""}> Thêm 2 trang hình tham khảo (dán tem Part#, Tracker label, Warranty card…)</label></div>
  ${EXPC()}`;
  a.querySelectorAll("[data-dc]").forEach(i=>{i.oninput=()=>{c[i.dataset.dc]=i.value;save()};i.onfocus=()=>{i.dataset.old=c[i.dataset.dc]||""};
   i.onchange=async()=>{const key=i.dataset.dc;if(key==="po"){const v=i.value.trim().replace(/\s+/g," "),old=i.dataset.old||"";const t=v?await poTaken(v,S.id):null;if(!v||t){alert(v?`"${v}" đã là tên của báo cáo khác. Tên báo cáo không được trùng.`:"Tên báo cáo không được để trống.");i.value=c.po=old;save();return}c.po=v;i.value=v;save();return}
@@ -807,7 +810,7 @@ function dropHome(a){const c=S.cover;if(!S.skus.length){S.skus.push({id:uid(),co
  const cyc={X:"NA",NA:"X","":"X"};
  a.querySelectorAll("[data-tp]").forEach(b=>b.onclick=()=>{const[g,i]=b.dataset.tp.split(":"),tp=c.tp||(c.tp={});(tp[g]||(tp[g]={}))[i]=cyc[pr[g][+i]]??"X";save();render()});
  if($("#tpa"))$("#tpa").onclick=()=>{delete c.tp;save();render()};
- $("#dref").onchange=e=>{c.ref=e.target.checked?1:0;save()};
+ $("#dref").onchange=e=>{c.refOn=e.target.checked?1:0;save()};
  a.querySelectorAll("[data-k]").forEach(e=>e.onclick=()=>{V={p:"sec",s:k.id,k:e.dataset.k};render();scrollTo(0,0)});
  bindExp()}
 const DT={dpk:["Packaging Photos Before Test","Hình đóng gói trước khi test"],dwt:["Weight Photos","Hình Cân Nặng Thùng và Sản Phẩm"],ddim:["Packaging Dim Photos","Hình kích thước thùng"],dinb:["Inner Box Dim Photos","Hình kích thước thùng trong"],dcor:["Drop Test Photo - Corner","Hình Test Thả Rơi - Góc"],dfac:["Drop Test Photo - Face","Hình Test Thả Rơi - Mặt"],dedg:["Drop Test Photo - Edges","Hình Test Thả Rơi - Cạnh"],dopen:["Open Box After Tested","Hình khui thùng sau khi test"],dmat:["Packing Materials Photos","Hình Vật Tư Đóng Gói"],dcmp:["Loose Component Photos","Hình chi tiết rời"],dman:["Loose Component Photos","Hình chi tiết rời"],dpph:["Product Photos after unbox","Hình sản phẩm sau khi khui thùng"]};
@@ -827,7 +830,7 @@ async function dropPages(H,P,I2,mode){const c=S.cover,k=S.skus[0]||{sec:{},code:
  /* Các trang ảnh */
  const L=[10,440,875],TP=[102,481],hdr=(key,i)=>{const t=DT[key];return`<div class=dh>${esc(i?`${t[0]} (Continued)/ ${t[1]} (tiếp theo)`:`${t[0]}/ ${t[1]}`)}</div>`};
  const fig=(p,l,t,cap)=>!p?(mode===2?`<figure class=dq style="left:${l}px;top:${t}px"><div class=eb></div><figcaption></figcaption></figure>`:""):`<figure class=dq style="left:${l}px;top:${t}px">${p.id?`<img src="${I2(p.id)}">`:`<div class=eb></div>`}<figcaption>${cap?"• "+esc(cap):""}</figcaption></figure>`;
- const refs=async()=>{if(c.ref===0)return;for(const f of["dref1.jpg","dref2.jpg"]){try{const r=await fetch(f);if(!r.ok)continue;const b=await r.blob();H.push(`<section class=P><img class=fp src="${URL.createObjectURL(b)}" style="position:absolute;left:0;top:0;width:1316px;height:911px;object-fit:fill"></section>`)}catch(e){}}};
+ const refs=async()=>{if(c.refOn!==1)return;for(const f of["dref1.jpg","dref2.jpg"]){try{const r=await fetch(f);if(!r.ok)continue;const b=await r.blob();H.push(`<section class=P><img class=fp src="${URL.createObjectURL(b)}" style="position:absolute;left:0;top:0;width:1316px;height:911px;object-fit:fill"></section>`)}catch(e){}}};
  let refDone=0;
  for(const[key]of DSEC){if(key==="dpph"){await refs();refDone=1}
   const x=k.sec[key];if(!secUsed(x,key))continue;const ph=dropPh(k,key),cap=(p,q)=>p.cap||dc(key,q);
@@ -1238,23 +1241,61 @@ function edDraw(im,st,maxSide,full){const sw=im.naturalWidth||im.width,sh=im.nat
  g.fillStyle="#fff";g.fillRect(0,0,c.width,c.height);g.imageSmoothingQuality="high";g.scale(k,k);g.translate(-c0.x*W0+W0/2,-c0.y*H0+H0/2);
  const A=st.a*Math.PI/180,ca=Math.abs(Math.cos(A)),sa=Math.abs(Math.sin(A)),z=Math.max((W0*ca+H0*sa)/W0,(W0*sa+H0*ca)/H0);
  g.rotate(A);g.scale(z,z);g.scale(st.fh?-1:1,st.fv?-1:1);g.rotate(st.r*Math.PI/2);g.drawImage(im,-sw/2,-sh/2);return c}
-const edPlain=st=>!st.r&&!st.fh&&!st.fv&&!st.a&&st.c.x<=0&&st.c.y<=0&&st.c.w>=1&&st.c.h>=1;
+const edPlain=st=>!st.r&&!st.fh&&!st.fv&&!st.a&&st.c.x<=0&&st.c.y<=0&&st.c.w>=1&&st.c.h>=1&&!(st.ann&&st.ann.length);
+/* ===== Vẽ mũi tên / chữ lên ảnh (toạ độ 0..1 theo khung ảnh đã xoay, chưa cắt) ===== */
+const EDC={r:"#e00000",y:"#ffd400",b:"#1565ff"};
+function drawAnn(g,W,H,list){const M=Math.max(W,H);g.save();g.lineCap="round";g.lineJoin="round";
+ for(const a of list||[]){const col=EDC[a.c]||a.c||"#e00000";g.strokeStyle=g.fillStyle=col;
+  if(a.t==="a"){const x1=a.x1*W,y1=a.y1*H,x2=a.x2*W,y2=a.y2*H,lw=Math.max(2,a.w*M),hl=Math.max(lw*3.2,M*.018),ang=Math.atan2(y2-y1,x2-x1);
+   const head=(x,y,an)=>{g.beginPath();g.moveTo(x,y);g.lineTo(x-hl*Math.cos(an-.42),y-hl*Math.sin(an-.42));g.lineTo(x-hl*Math.cos(an+.42),y-hl*Math.sin(an+.42));g.closePath();g.fill()};
+   const sh=hl*.8;g.lineWidth=lw;g.beginPath();g.moveTo(x1+(a.two?sh*Math.cos(ang):0),y1+(a.two?sh*Math.sin(ang):0));g.lineTo(x2-sh*Math.cos(ang),y2-sh*Math.sin(ang));g.stroke();
+   head(x2,y2,ang);if(a.two)head(x1,y1,ang+Math.PI)}
+  else if(a.t==="t"&&a.s){const fs=Math.max(10,a.f*M);g.save();g.translate(a.x*W,a.y*H);if(a.v)g.rotate(-Math.PI/2);g.font=`700 ${fs}px Arial,Helvetica,sans-serif`;g.textAlign="center";g.textBaseline="middle";
+   g.lineWidth=fs*.16;g.strokeStyle=a.c==="y"?"rgba(0,0,0,.75)":"rgba(255,255,255,.9)";g.strokeText(a.s,0,0);g.fillStyle=col;g.fillText(a.s,0,0);g.restore()}}
+ g.restore()}
+/* ảnh đã sửa (xoay/cắt) + chú thích vẽ */
+function edRender(im,st,maxSide){if(!st.ann||!st.ann.length)return edDraw(im,st,maxSide);const c0=st.c,F=edDraw(im,st,Math.min(6000,maxSide/Math.max(c0.w,c0.h)),1);{const g=F.getContext("2d");g.setTransform(1,0,0,1,0,0);drawAnn(g,F.width,F.height,st.ann)}
+ const sx=c0.x*F.width,sy=c0.y*F.height,sw=c0.w*F.width,sh=c0.h*F.height,k=Math.min(1,maxSide/Math.max(sw,sh)),o=document.createElement("canvas");o.width=Math.max(1,Math.round(sw*k));o.height=Math.max(1,Math.round(sh*k));
+ o.getContext("2d").drawImage(F,sx,sy,sw,sh,0,0,o.width,o.height);F.width=F.height=0;return o}
 function editImg(id){return new Promise(async done=>{const src=await img(id);if(!src){alert("Không đọc được ảnh");return done(false)}
  let full;try{full=await loadIm(src)}catch(e){alert("Không đọc được ảnh");return done(false)}
  /* ảnh xem trước nhỏ để kéo thanh chỉnh mượt */
  const pv=(()=>{const k=Math.min(1,1100/Math.max(full.naturalWidth,full.naturalHeight)),c=document.createElement("canvas");c.width=Math.round(full.naturalWidth*k);c.height=Math.round(full.naturalHeight*k);c.getContext("2d").drawImage(full,0,0,c.width,c.height);return c})();
- const st={r:0,fh:0,fv:0,a:0,c:{x:0,y:0,w:1,h:1}},RT=[["Tự do",0],["4:3",4/3],["3:4",3/4],["1:1",1]];let rt=0;
+ const st={r:0,fh:0,fv:0,a:0,c:{x:0,y:0,w:1,h:1},ann:[]},RT=[["Tự do",0],["4:3",4/3],["3:4",3/4],["1:1",1]];let rt=0;
  const m=document.createElement("div");m.className="ed";
- m.innerHTML=`<div class=edt><button class=no>Hủy</button><span>Sửa ảnh</span><button class=ok>Lưu</button></div><div class=edw><canvas></canvas><div class=ecb>${["nw","n","ne","e","se","s","sw","w"].map(h=>`<i data-h=${h}></i>`).join("")}</div></div>
-  <div class=eda>Chỉnh nghiêng: <b class=eav>0°</b></div><input class=eds type=range min=-45 max=45 step=0.1 value=0>
-  <div class=edb><button data-a=l>↺ 90°</button><button data-a=r>↻ 90°</button><button data-a=h>⇆ Lật ngang</button><button data-a=v>⇅ Lật dọc</button><button data-a=t>▢ Tự do</button><button data-a=z>Đặt lại</button></div>`;document.body.append(m);
- const cv=m.querySelector("canvas"),box=m.querySelector(".ecb"),wrap=m.querySelector(".edw"),sl=m.querySelector(".eds"),av=m.querySelector(".eav");
+ m.innerHTML=`<div class=edt><button class=no>Hủy</button><span>Sửa ảnh</span><button class=ok>Lưu</button></div><div class=edw><canvas></canvas><canvas class=eov></canvas><div class=ecb>${["nw","n","ne","e","se","s","sw","w"].map(h=>`<i data-h=${h}></i>`).join("")}</div></div>
+  <div class=edm><button data-md=crop class=on>✂ Cắt / xoay</button><button data-md=draw>✏️ Mũi tên &amp; chữ</button></div>
+  <div class=edp hidden><div class=edr><button data-tl=a2 class=on title="Mũi tên 2 đầu (đo kích thước)">↔</button><button data-tl=a1 title="Mũi tên chỉ">➝</button><button data-tl=t title="Chữ / số đo">T</button><span class=sep></span><button data-cl=r class="sw on" style="background:#e00000"></button><button data-cl=y class=sw style="background:#ffd400"></button><button data-cl=b class=sw style="background:#1565ff"></button></div>
+   <div class=edr><button data-sz=0>Nhỏ</button><button data-sz=1 class=on>Vừa</button><button data-sz=2>Lớn</button><button data-vt=1 title="Chữ dọc (theo cạnh đứng)">⤒ Dọc</button><button data-un=1 title="Hoàn tác">↶ Lùi</button><button data-cx=1 title="Xóa hết hình vẽ">🗑</button></div>
+   <div class=eda style="opacity:.8">Kéo trên ảnh để vẽ mũi tên · chọn T rồi chạm vào ảnh để ghi chữ (VD 120cm)</div></div>
+  <div class=edx><div class=eda>Chỉnh nghiêng: <b class=eav>0°</b></div><input class=eds type=range min=-45 max=45 step=0.1 value=0>
+  <div class=edb><button data-a=l>↺ 90°</button><button data-a=r>↻ 90°</button><button data-a=h>⇆ Lật ngang</button><button data-a=v>⇅ Lật dọc</button><button data-a=t>▢ Tự do</button><button data-a=z>Đặt lại</button></div></div>`;document.body.append(m);
+ const cv=m.querySelector("canvas"),ov=m.querySelector(".eov"),box=m.querySelector(".ecb"),wrap=m.querySelector(".edw"),sl=m.querySelector(".eds"),av=m.querySelector(".eav");
  let W0=1,H0=1;
  const draw=()=>{const c=edDraw(pv,st,1100,1);cv.width=c.width;cv.height=c.height;cv.getContext("2d").drawImage(c,0,0);c.width=0;W0=cv.width;H0=cv.height;place()};
- const place=()=>{const r=cv.getBoundingClientRect(),w=wrap.getBoundingClientRect();Object.assign(box.style,{left:(r.left-w.left+st.c.x*r.width)+"px",top:(r.top-w.top+st.c.y*r.height)+"px",width:st.c.w*r.width+"px",height:st.c.h*r.height+"px"})};
+ const place=()=>{const r=cv.getBoundingClientRect(),w=wrap.getBoundingClientRect();Object.assign(ov.style,{left:(r.left-w.left)+"px",top:(r.top-w.top)+"px",width:r.width+"px",height:r.height+"px"});if(ov.width!==cv.width||ov.height!==cv.height){ov.width=cv.width;ov.height=cv.height}drawOv();Object.assign(box.style,{left:(r.left-w.left+st.c.x*r.width)+"px",top:(r.top-w.top+st.c.y*r.height)+"px",width:st.c.w*r.width+"px",height:st.c.h*r.height+"px"})};
  const fitRatio=()=>{const R=RT[rt][1];if(!R){return}let w=1,h=(W0/R)/H0;if(h>1){h=1;w=(H0*R)/W0}st.c={x:(1-w)/2,y:(1-h)/2,w,h};place()};
- sl.oninput=()=>{st.a=+sl.value;av.textContent=(st.a>0?"+":"")+st.a.toFixed(1)+"°";draw()};
- m.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const a=b.dataset.a;
+ /* --- vẽ mũi tên / chữ --- */
+ const SZ=[[.004,.032],[.0065,.045],[.01,.065]];let tool="a2",col="r",sz=1,vt=0,cur=null;
+ const drawOv=()=>{const g=ov.getContext("2d");g.clearRect(0,0,ov.width,ov.height);drawAnn(g,ov.width,ov.height,cur?[...st.ann,cur]:st.ann);
+  if(mode==="draw"&&!(st.c.x<=0&&st.c.y<=0&&st.c.w>=1&&st.c.h>=1)){g.save();g.fillStyle="rgba(0,0,0,.45)";g.beginPath();g.rect(0,0,ov.width,ov.height);g.rect(st.c.x*ov.width,st.c.y*ov.height,st.c.w*ov.width,st.c.h*ov.height);g.fill("evenodd");g.restore()}};
+ let mode="crop";const setMode=md=>{mode=md;m.querySelectorAll("[data-md]").forEach(b=>b.classList.toggle("on",b.dataset.md===md));box.style.display=md==="crop"?"":"none";ov.style.pointerEvents=md==="draw"?"auto":"none";m.querySelector(".edp").hidden=md!=="draw";m.querySelector(".edx").hidden=md==="draw";drawOv()};
+ m.querySelectorAll("[data-md]").forEach(b=>b.onclick=()=>setMode(b.dataset.md));
+ const pick=(sel,attr,fn)=>m.querySelectorAll(sel).forEach(b=>b.onclick=()=>{m.querySelectorAll(sel).forEach(z=>z.classList.toggle("on",z===b));fn(b.dataset[attr])});
+ pick("[data-tl]","tl",v=>tool=v);pick("[data-cl]","cl",v=>col=v);pick("[data-sz]","sz",v=>sz=+v);
+ m.querySelector("[data-vt]").onclick=e=>{vt^=1;e.currentTarget.classList.toggle("on",!!vt)};
+ m.querySelector("[data-un]").onclick=()=>{st.ann.pop();drawOv()};m.querySelector("[data-cx]").onclick=()=>{if(st.ann.length&&confirm("Xóa hết mũi tên và chữ đã vẽ?")){st.ann=[];drawOv()}};
+ const uv=e=>{const r=ov.getBoundingClientRect();return[Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)),Math.min(1,Math.max(0,(e.clientY-r.top)/r.height))]};
+ ov.onpointerdown=e=>{e.preventDefault();const[x,y]=uv(e);
+  if(tool==="t"){const t=prompt("Nhập chữ / số đo (VD 120cm):","");if(t&&t.trim()){st.ann.push({t:"t",x,y,s:t.trim(),c:col,f:SZ[sz][1],v:vt});drawOv()}return}
+  ov.setPointerCapture(e.pointerId);cur={t:"a",x1:x,y1:y,x2:x,y2:y,c:col,w:SZ[sz][0],two:tool==="a2"};drawOv()};
+ ov.onpointermove=e=>{if(!cur)return;const[x,y]=uv(e);cur.x2=x;cur.y2=y;drawOv()};
+ ov.onpointerup=ov.onpointercancel=()=>{if(!cur)return;const d=Math.hypot((cur.x2-cur.x1)*ov.width,(cur.y2-cur.y1)*ov.height);if(d>12)st.ann.push(cur);cur=null;drawOv()};
+ /* xoay / lật / nghiêng làm lệch hình vẽ → hỏi trước */
+ const geoOK=()=>!st.ann.length||confirm("Xoay / lật / chỉnh nghiêng sẽ xóa các mũi tên và chữ đã vẽ. Tiếp tục?")?(st.ann=[],true):false;
+ sl.onpointerdown=e=>{if(st.ann.length&&!geoOK()){e.preventDefault()}};
+ sl.oninput=()=>{if(st.ann.length){st.ann=[]}st.a=+sl.value;av.textContent=(st.a>0?"+":"")+st.a.toFixed(1)+"°";draw()};
+ m.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const a=b.dataset.a;if(a!=="t"&&!geoOK())return;
   if(a==="l"||a==="r"){st.r=(st.r+(a==="r"?1:3))%4;st.c={x:0,y:0,w:1,h:1};draw();fitRatio()}
   else if(a==="h"){st.fh^=1;st.c.x=1-st.c.x-st.c.w;draw()}else if(a==="v"){st.fv^=1;st.c.y=1-st.c.y-st.c.h;draw()}
   else if(a==="t"){rt=(rt+1)%RT.length;b.textContent="▢ "+RT[rt][0];if(rt)fitRatio();else place()}
@@ -1273,9 +1314,9 @@ function editImg(id){return new Promise(async done=>{const src=await img(id);if(
  const close=v=>{removeEventListener("resize",ro);m.remove();done(v)};
  m.querySelector(".no").onclick=()=>close(false);
  m.querySelector(".ok").onclick=async()=>{if(edPlain(st))return close(false);busyMsg("Đang lưu ảnh đã sửa…");try{
-   const c=edDraw(full,st,4096),nb=await cvBlob(c,.9);c.width=c.height=0;if(!nb)throw new Error("không tạo được ảnh");if(!(await idbPut("i",id,nb)))throw new Error("không lưu được");
+   const c=edRender(full,st,4096),nb=await cvBlob(c,.9);c.width=c.height=0;if(!nb)throw new Error("không tạo được ảnh");if(!(await idbPut("i",id,nb)))throw new Error("không lưu được");
    memSet(id,nb);delete memT[id];await idbDel("i","t:"+id);await saveThumb(id);await idbDel("m","u:"+id);
-   const h=await idbGet("i","h:"+id);if(h&&h.size){const u=URL.createObjectURL(h);try{const hi=await loadIm(u),c2=edDraw(hi,st,6000),hb=await cvBlob(c2,.92);c2.width=c2.height=0;if(hb)await idbPut("i","h:"+id,hb)}catch(e){}finally{URL.revokeObjectURL(u)}}
+   const h=await idbGet("i","h:"+id);if(h&&h.size){const u=URL.createObjectURL(h);try{const hi=await loadIm(u),c2=edRender(hi,st,6000),hb=await cvBlob(c2,.92);c2.width=c2.height=0;if(hb)await idbPut("i","h:"+id,hb)}catch(e){}finally{URL.revokeObjectURL(u)}}
    await save();busyEnd();toast("✓ Đã lưu ảnh đã sửa");close(true)}catch(e){busyEnd();alert("Không lưu được ảnh: "+(e&&e.message||e))}};
  requestAnimationFrame(draw)})}
 /* ===== Xoay ảnh trái/phải (xoay cả bản báo cáo lẫn ảnh gốc) ===== */
