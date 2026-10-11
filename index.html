@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="theme-color" content="#3b3b3b">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png?v=55"><link rel="icon" href="icon-192.png?v=55"><meta name="theme-color" content="#3b3b3b">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Kiểm hàng"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Báo cáo kiểm hàng</title>
 <style>
@@ -195,7 +195,7 @@ const SEC=[["box","Box Selection","Chọn thùng"],["pack","Packaging Check","Ki
 const DSEC=[["dpk","Packaging Before Test","Đóng gói trước khi test"],["dwt","Weight Photos","Cân nặng thùng & sản phẩm"],["ddim","Packaging Dim","Kích thước thùng"],["dinb","Inner Box Dim","Kích thước thùng trong (inner box)"],["dcor","Drop Test – Corner","Thả rơi – Góc"],["dfac","Drop Test – Face","Thả rơi – Mặt"],["dedg","Drop Test – Edges","Thả rơi – Cạnh"],["dopen","Open Box After Tested","Khui thùng sau khi test"],["dmat","Packing Materials","Vật tư đóng gói"],["dcmp","Loose Components","Chi tiết rời"],["dman","Manual (AI)","Hướng dẫn lắp ráp (HDLR)"],["dpph","Product After Unbox","Sản phẩm sau khi khui thùng"]];
 const PSEC=[["pcov","Cover Photo","Ảnh trang bìa"],["pms","Master Samples at Factory","Mẫu kí lưu tại nhà máy"],["ppro","Product Photos","Hình sản phẩm"],["pww","WW Product Photos","Hình sản phẩm chưa sơn"],["podim","Overall Dim","Kích thước tổng thể"],["pdim","Details Dim Measure","Đo kích thước chi tiết"],["pmat","Materials","Vật liệu"],["pkd","KD Component – HW","Chi tiết tháo rời & ngũ kim"],["pdraw","Product Drawing","Bản vẽ sản phẩm"],["pwatch","Production Watch Out","Lưu ý cho sản xuất"]];
 const ASEC=[...SEC,...DSEC,...PSEC],isDrop=r=>(r||S||{}).type==="drop",isPPS=r=>(r||S||{}).type==="pps",isOne=r=>isDrop(r)||isPPS(r),isDK=k=>DSEC.some(z=>z[0]===k)||PSEC.some(z=>z[0]===k),SECS=()=>isDrop()?DSEC:isPPS()?PSEC:SEC;
-const APPV="v54";const $=s=>document.querySelector(s);
+const APPV="v55";const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 let db,S,V={p:"list"},mem={};
