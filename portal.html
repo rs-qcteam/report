@@ -78,6 +78,7 @@ const COL={r:"#e53935",y:"#ffc400",b:"#1e88e5"};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const EMB=/embed=1/.test(location.hash);
+const SRVMAP={"rs-qcteam.github.io":"https://rs-report.taidb87.workers.dev","thienphong6287-cmd.github.io":"https://bao-cao.thienphong6287.workers.dev"},DEFSRV=()=>{try{const o=localStorage.getItem("fir_srv");if(o)return o}catch(e){}return SRVMAP[location.hostname]||""};
 function toast(t){const e=$("#tst");e.textContent=t;e.className="on";clearTimeout(toast.t);toast.t=setTimeout(()=>e.className="",2400)}
 const ls={get(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}},set(k,v){try{v==null?localStorage.removeItem(k):localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 /* phiên: ưu tiên đăng nhập riêng của thư viện; nếu không có thì dùng kết nối của app (cùng trang) */
@@ -100,7 +101,7 @@ const IO=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting){IO
 const lazy=root=>root.querySelectorAll("img[data-id]").forEach(i=>IO.observe(i));
 
 /* ===== đăng nhập ===== */
-function loginView(msg){$("#bk").hidden=true;$("#usr").hidden=true;$("#ttl").textContent="Đăng nhập";const a=ls.get("fir_sync")||{},q=new URLSearchParams(location.hash.slice(1));const url=q.get("s")||(ls.get("fir_portal")||{}).url||a.url||"";
+function loginView(msg){$("#bk").hidden=true;$("#usr").hidden=true;$("#ttl").textContent="Đăng nhập";const a=ls.get("fir_sync")||{},q=new URLSearchParams(location.hash.slice(1));const url=q.get("s")||(ls.get("fir_portal")||{}).url||a.url||DEFSRV();
  $("#app").innerHTML=`<div class=c style="max-width:420px;margin:30px auto"><h2>📚 Thư viện báo cáo kiểm hàng</h2><p class=tip>Đăng nhập bằng tài khoản admin cấp cho bạn.</p>
  <label>Địa chỉ máy chủ</label><input id=lu value="${esc(url)}" placeholder="https://….workers.dev">
  <label>Tên đăng nhập</label><input id=ll autocomplete=username autocapitalize=none><label>Mật khẩu</label><input id=lp type=password autocomplete=current-password>
